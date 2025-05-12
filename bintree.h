@@ -98,10 +98,6 @@ int nbElmt (BinTree P);
 /* Mengirimkan banyak elemen (node) pohon biner P */
 int nbDaun (BinTree P);
 /* Mengirimkan banyak daun (node) pohon biner P */
-boolean IsSkewLeft (BinTree P);
-/* Mengirimkan true jika P adalah pohon condong kiri */
-boolean IsSkewRight (BinTree P);
-/* Mengirimkan true jika P adalah pohon condong kanan */
 int Level (BinTree P, infotype X);
 /* Mengirimkan level dari node X yang merupakan salah satu simpul dari */
 /* pohon biner P. Akar (P) levelnya adalah 1. Pohon tidak kosong */
@@ -146,10 +142,6 @@ ListOfNode MakeListLevel (BinTree P, int N);
 /*        elemen pohon P yang levelnya = N, jika semua alokasi berhasil */
 /*       		menghasilkan list kosong jika ada alokasi yang gagal */
 
-/***** Membentuk Balanced Tree *****/
-BinTree BuildBalanceTree (int N);
-/* Menghasilkan sebuah balance Tree dengan N Node, nilai setiap node dibaca */
-
 /***** Operasi untuk Binary Search Tree *****/
 boolean BSearch (BinTree P, infotype X);
 /* Mengirimkan True jika ada node dari P yang bernilai X */
@@ -160,10 +152,6 @@ void InsSearch (BinTree *P, infotype X);
 /* Menghasilkan sebuah pohon Binary Search Tree P dengan tambahan simpul X. */
 /* Belum ada simpul P yang bernilai X */
 
-void DestroyTree (BinTree *P);
-/* Menghapus seluruh elemen Tree secara Rekursif */
-/* IS : P terdefinisi */
-/* FS : Semua simpul P sudah dihapus secara PostOrder :  Kiri, Kanan, Akar */
 void DelBTree (BinTree *P, infotype X);
 /* IS : Pohon P TIDAK kosong */
 /* FS : Nilai X yang dihapus pasti ada, sebuah node dengan nilai X dihapus */
