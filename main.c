@@ -35,16 +35,7 @@ int main() {
                 printf("\n");
                 break;
             case 6: {
-                int d = Depth(tree);
-                int i;
-                for (i = 1; i <= d; i++) {
-                    ListOfNode L = MakeListLevel(tree, i);
-                    while (L != Nil) {
-                        printf("%d ", InfoList(L));
-                        L = Next(L);
-                    }
-                }
-                printf("\n");
+                
                 break;
             }
             case 7: {
