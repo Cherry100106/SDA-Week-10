@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "bintree.h"
+#include "queue.h"
 
 void Menu();
 void InsertNode(BinTree *tree);
@@ -35,7 +36,8 @@ int main() {
                 printf("\n");
                 break;
             case 6: {
-                
+                printf("Transversal LevelOrder:\n");
+                LevelOrder(tree);
                 break;
             }
             case 7: {

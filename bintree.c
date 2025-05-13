@@ -1,5 +1,6 @@
 #include "bintree.h"
 #include <stdlib.h>
+#include "queue.h"
 
 /* Konstruktor */
 address Alokasi (infotype X) {
@@ -255,4 +256,27 @@ void DelNode(BinTree *P) {
 
 void DeAlokasi(address P) {
     free(P);
+}
+
+void LevelOrder(BinTree P) {    
+    if (IsEmpty(P)) {
+        printf("Pohon kosong\n");
+        return;
+    }
+    
+    Queue q;
+    initQueue(&q);
+    enqueue(&q, P);
+    
+    while (!isEmptyQueue(q)) {
+        address current = dequeue(&q);
+        printf("%d ", Info(current));
+        
+        if (Left(current) != NULL) {
+            enqueue(&q, Left(current));
+        }
+        if (Right(current) != NULL) {
+            enqueue(&q, Right(current));
+        }
+    }
 }

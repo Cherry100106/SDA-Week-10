@@ -163,4 +163,7 @@ void DeAlokasi (address P);
 /* FS : P dikembalikan ke sistem */
 /* Melakukan dealokasi / pengembalian address P ke system */
 
+void BuildMorseTree(BinTree *P);
+void LevelOrder(BinTree P);
+
 #endif
