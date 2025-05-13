@@ -1,102 +1,146 @@
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
+#include <stdlib.h>
 #include "bintree.h"
 
-void BuildMorseTree(BinTree *P) {
-    // Level 5
-    BinTree n5 = Tree('5', Nil, Nil);
-    BinTree n4 = Tree('4', Nil, Nil);
-    BinTree n3 = Tree('3', Nil, Nil);
-    BinTree n2 = Tree('2', Nil, Nil);
-    BinTree n1 = Tree('1', Nil, Nil);
-    BinTree n6 = Tree('6', Nil, Nil);
-    BinTree n7 = Tree('7', Nil, Nil);
-    BinTree n8 = Tree('8', Nil, Nil);
-    BinTree n9 = Tree('9', Nil, Nil);
-    BinTree spasi = Tree(' ', Nil, Nil);
-
-    // Level 4
-    BinTree H = Tree('H', n5, n4);
-    BinTree V = Tree('V', Nil, n3);
-    BinTree F = Tree('F', Nil, Nil);
-    BinTree empty1 = Tree('\0', Nil, n2);
-    BinTree L = Tree('L', Nil, Nil);
-    BinTree empty2 = Tree('\0', spasi, Nil);
-    BinTree P_ = Tree('P', Nil, Nil);
-    BinTree J = Tree('J', Nil, n1);
-    BinTree B = Tree('B', n6, Nil);
-    BinTree X = Tree('X', Nil, Nil);
-    BinTree C = Tree('C', Nil, Nil);
-    BinTree Y = Tree('Y', Nil, Nil);
-    BinTree Z = Tree('Z', n7, Nil);
-    BinTree Q = Tree('Q', Nil, Nil);
-    BinTree n0 = Tree('0', n8, Nil);
-    BinTree empty3 = Tree('\0', n9, Nil);
-
-    
-    // Level 3
-    BinTree S = Tree('S', H, V);
-    BinTree U = Tree('U', F, empty1);
-    BinTree R = Tree('R', L, empty2);
-    BinTree W = Tree('W', P_, J);
-    BinTree D = Tree('D', B, X);
-    BinTree K = Tree('K', C, Y);
-    BinTree G_ = Tree('G', Z, Q);
-    BinTree O = Tree('O', n0, empty3);
-    
-    // Level 2
-    BinTree I = Tree('I', S, U);
-    BinTree A = Tree('A', R, W);
-    BinTree N = Tree('N', D, K);
-    BinTree M = Tree('M', G_, O);
-
-    // Level 1
-    BinTree E = Tree('E', I, A);
-    BinTree T = Tree('T', N, M);
-
-    // Root / Level 0
-    *P = Tree('#', E, T);
-}
-
-int BuildMorseCode(BinTree root, BinTree target, char *path, int depth) {
-    if (root == Nil) return 0;
-    if (root == target) {
-        path[depth] = '\0';
-        return 1;
-    }
-    if (BuildMorseCode(Left(root), target, path, depth + 1)) {
-        path[depth] = '.';
-        return 1;
-    }
-    if (BuildMorseCode(Right(root), target, path, depth + 1)) {
-        path[depth] = '-';
-        return 1;
-    }
-    return 0;
-}
+void Menu();
+void InsertNode(BinTree *tree);
 
 int main() {
-    BinTree morseTree = Nil;
-    BuildMorseTree(&morseTree);
+    BinTree tree = Nil;
+    int pilihan;
+    do {
+        Menu();
+        printf("Pilih menu: ");
+        scanf("%d", &pilihan);
+        getchar();
 
-    char input[256];
-    printf("Masukkan kata/kalimat: ");
-    fgets(input, sizeof(input), stdin);
-    input[strcspn(input, "\n")] = '\0';
-
-    printf("Morse: ");
-
-    int i;
-    for (i = 0; i < strlen(input); i++) {
-        char ch = toupper(input[i]);
-        address node = BinSearch(morseTree, ch);
-        if (node != Nil) {
-            char code[10];
-            BuildMorseCode(morseTree, node, code, 0);
-            printf("%s  ", code);
+        switch (pilihan) {
+            case 1:
+                InsertNode(&tree);
+                break;
+            case 2:
+                PrintTree(tree, 0);
+                break;
+            case 3:
+                PreOrder(tree);
+                printf("\n");
+                break;
+            case 4:
+                InOrder(tree);
+                printf("\n");
+                break;
+            case 5:
+                PostOrder(tree);
+                printf("\n");
+                break;
+            case 6: {
+                int d = Depth(tree);
+                int i;
+                for (i = 1; i <= d; i++) {
+                    ListOfNode L = MakeListLevel(tree, i);
+                    while (L != Nil) {
+                        printf("%d ", InfoList(L));
+                        L = Next(L);
+                    }
+                }
+                printf("\n");
+                break;
+            }
+            case 7: {
+                infotype x;
+                printf("Masukkan info node yang dicari: ");
+                scanf(" %d", &x);
+                printf(Search(tree, x) ? "Node ditemukan\n" : "Node tidak ditemukan\n");
+                break;
+            }
+            case 8:
+                printf("Jumlah daun: %d\n", nbDaun(tree));
+                break;
+            case 9: {
+                infotype x;
+                printf("Masukkan info node: ");
+                scanf(" %d", &x);
+                printf("Kedalaman node %d adalah %d\n", x, Level(tree, x));
+                break;
+            }
+            case 10: {
+                infotype a, b;
+                printf("Masukkan info node pertama: ");
+                scanf(" %d", &a);
+                printf("Masukkan info node kedua: ");
+                scanf(" %d", &b);
+                int max = Max(a, b);
+                printf("Node dengan nilai lebih besar: %d\n", max);
+                break;
+            }
+            case 11:
+                printf("Keluar dari program.\n");
+                break;
+            default:
+                printf("Pilihan tidak valid.\n");
         }
-    }
+    } while (pilihan != 11);
 
     return 0;
+}
+
+void Menu() {
+    printf("\nMenu:\n");
+    printf("1. Insert Node\n");
+    printf("2. Print Tree\n");
+    printf("3. Transversal PreOrder\n");
+    printf("4. Transversal InOrder\n");
+    printf("5. Transversal PostOrder\n");
+    printf("6. Transversal LevelOrder\n");
+    printf("7. Search Node Tree\n");
+    printf("8. Jumlah Daun\n");
+    printf("9. Mencari Kedalaman Node Tree\n");
+    printf("10. Membandingkan 2 Node Tree\n");
+    printf("11. Exit\n");
+}
+
+void InsertNode(BinTree *tree) {
+    infotype x, parent;
+    printf("Masukkan info node yang ingin ditambahkan: ");
+    scanf("%d", &x);
+
+    if (IsEmpty(*tree)) {
+        *tree = Alokasi(x);
+        printf("Node %d berhasil menjadi akar.\n", x);
+    } else {
+        printf("Masukkan info parent node: ");
+        scanf("%d", &parent);
+        address pNode = BinSearch(*tree, parent);
+
+        if (pNode != Nil) {
+            if (Left(pNode) == Nil || Right(pNode) == Nil) {
+                char posisi[6];
+                printf("Masukkan posisi anak (left/right): ");
+                scanf("%s", posisi);
+
+                if (strcmp(posisi, "left") == 0) {
+                    if (Left(pNode) == Nil) {
+                        Left(pNode) = Tree(x, Nil, Nil);
+                        printf("Node %d ditambahkan sebagai left son dari %d\n", x, parent);
+                    } else {
+                        printf("Insert gagal: Left son sudah ada.\n");
+                    }
+                } else if (strcmp(posisi, "right") == 0) {
+                    if (Right(pNode) == Nil) {
+                        Right(pNode) = Tree(x, Nil, Nil);
+                        printf("Node %d ditambahkan sebagai right son dari %d\n", x, parent);
+                    } else {
+                        printf("Insert gagal: Right son sudah ada.\n");
+                    }
+                } else {
+                    printf("Posisi tidak valid. Gunakan 'left' atau 'right'.\n");
+                }
+            } else {
+                printf("Insert gagal: Node %d sudah memiliki dua anak.\n", parent);
+            }
+        } else {
+            printf("Parent tidak ditemukan dalam tree.\n");
+        }
+    }
 }
